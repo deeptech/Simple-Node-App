@@ -26,8 +26,9 @@ pipeline:
                   identifier: Build_and_push_to_Docker
                   spec:
                     connectorRef: docker
-                    repo: deepansh786/nodeapp
-                    tags: <+pipeline.sequenceId>
+                    repo: deepnsh786/nodeapp
+                    tags:
+                      - v1
           infrastructure:
             type: KubernetesDirect
             spec:
