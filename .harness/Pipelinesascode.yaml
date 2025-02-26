@@ -28,7 +28,7 @@ pipeline:
                     connectorRef: docker
                     repo: nodeapp
                     tags:
-                      - latest
+                      - v1
           infrastructure:
             type: KubernetesDirect
             spec:
