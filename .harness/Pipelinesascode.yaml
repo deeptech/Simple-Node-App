@@ -26,7 +26,7 @@ pipeline:
                   identifier: BuildAndPushDockerRegistry_1
                   spec:
                     connectorRef: docker
-                    repo: deepansh786
+                    repo: nodeapp
                     tags:
                       - latest
           infrastructure:
