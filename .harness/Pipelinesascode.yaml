@@ -6,8 +6,9 @@ pipeline:
   tags: {}
   properties:
     ci:
-      codebase:
-        connectorRef: Githubcicd
+      Codebase:
+        connectorRef: account.github
+        repoName: Simple-Node-App
         build: <+input>
   stages:
     - stage:
