@@ -26,9 +26,9 @@ pipeline:
                   identifier: Build_and_push_to_Docker
                   spec:
                     connectorRef: docker
-                    repo: deepnash786/nodeapp
+                    repo: devsecopscoereg.azurecr.io/nodeapp
                     tags:
-                      - v1
+                      - "1.0"
           infrastructure:
             type: KubernetesDirect
             spec:
