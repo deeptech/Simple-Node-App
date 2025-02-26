@@ -1,0 +1,37 @@
+pipeline:
+  name: PipelineasCode
+  identifier: PipelineasCode
+  projectIdentifier: default_project
+  orgIdentifier: default
+  tags: {}
+  properties:
+    ci:
+      codebase:
+        connectorRef: Githubcicd
+        build: <+input>
+  stages:
+    - stage:
+        name: CI
+        identifier: CI
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Run_1
+                  identifier: Run_1
+                  spec:
+                    shell: Sh
+                    command: |-
+                      npm install
+                      npm test
+                  description: npm install
