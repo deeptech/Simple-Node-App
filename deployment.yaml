@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: app-deployment
-        image: pavansa/mumbai-app:latest
+        image: devsecopscoereg.azurecr.io/nodeapp:1
         resources:
           requests:
             cpu: "100m"
