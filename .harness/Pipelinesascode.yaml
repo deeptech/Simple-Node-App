@@ -6,7 +6,7 @@ pipeline:
   tags: {}
   properties:
     ci:
-      Codebase:
+      codebase:
         connectorRef: account.github
         repoName: Simple-Node-App
         build: <+input>
