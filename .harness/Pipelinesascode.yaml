@@ -25,7 +25,7 @@ pipeline:
                   name: BuildAndPushDockerRegistry_1
                   identifier: BuildAndPushDockerRegistry_1
                   spec:
-                    connectorRef: dockerhub
+                    connectorRef: docker
                     repo: deepansh786
                     tags:
                       - latest
