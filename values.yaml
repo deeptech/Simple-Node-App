@@ -5,8 +5,8 @@
 replicaCount: 4
 
 image:
-  repository: pavansa/mumbai-app:latest
-  tag: 0.1
+  repository: devsecopscoereg.azurecr.io/nodeapp:latest
+  tag: 1
   pullPolicy: IfNotPresent
 
 service:
