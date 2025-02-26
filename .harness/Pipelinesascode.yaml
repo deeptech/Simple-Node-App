@@ -22,13 +22,12 @@ pipeline:
             steps:
               - step:
                   type: BuildAndPushDockerRegistry
-                  name: BuildAndPushDockerRegistry_1
-                  identifier: BuildAndPushDockerRegistry_1
+                  name: Build and push to Docker
+                  identifier: Build_and_push_to_Docker
                   spec:
                     connectorRef: docker
-                    repo: nodeapp
-                    tags:
-                      - v1
+                    repo: deepansh786/nodeapp
+                    tags: <+pipeline.sequenceId>
           infrastructure:
             type: KubernetesDirect
             spec:
