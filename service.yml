@@ -1,0 +1,24 @@
+service:
+    name: harness_nodeapp
+    identifier: harnessnodeapp
+    serviceDefinition:
+        type: Kubernetes
+        spec:
+            manifests:
+                - manifest:
+                    identifier: nodeapp
+                    type: K8sManifest
+                    spec:
+                      store:
+                        type: Github
+                        spec:
+                            connectorRef: harnessgit
+                            gitFetchType: Branch
+                            paths:
+                                - deployment.yaml
+                                - service.yaml
+                            repoName: Simple-Node-App
+                            branch: master
+                        skipResourceVersioning: false
+                        enableDeclarativeRollback: false
+    gitOpsEnabled: false
