@@ -15,13 +15,15 @@ spec:
         app: node-app
     spec:
       containers:
-      - name: app-deployment
-        image: devsecopscoereg.azurecr.io/nodeapp:1
-        resources:
-          requests:
-            cpu: "100m"
-        imagePullSecrets:
+        - name: app-deployment
+          image: devsecopscoereg.azurecr.io/nodeapp:1
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              cpu: "100m"
+          ports:
+            - containerPort: 3002
+      imagePullSecrets:
         - name: appacr    
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 3002
+        
+
