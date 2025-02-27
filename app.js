@@ -5,7 +5,7 @@ const PORT = process.env.PORT || 3002;
 
 app.get('/', (request, response) => {
   response.status(200).json({
-    message: 'Hello Docker from node js app | test 1 !',
+    message: 'Hello Docker from node js app !',
   });
 });
 
