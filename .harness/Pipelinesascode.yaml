@@ -22,27 +22,35 @@ pipeline:
             useFromStage: CI
           execution:
             steps:
-              - step:
-                  type: Sonarqube
-                  name: Sonarqube_1
-                  identifier: Sonarqube_1
-                  spec:
-                    mode: orchestration
-                    config: branch-scan
-                    target:
-                      type: repository
-                      detection: auto
-                    advanced:
-                      log:
-                        level: info
-                      fail_on_severity: critical
-                    connectorRef: docker
-                    auth:
-                      access_token: cf3466855d04f145f375be0df4ed70e7a4c4ddd2
-                      domain: https://sonarcloud.io/guptadeepak
-                      ssl: true
-                    tool:
-                      analysis_detection: auto
+              - parallel:
+                  - step:
+                      type: Owasp
+                      name: Owasp_1
+                      identifier: Owasp_1
+                      spec:
+                        target:
+                          detection: auto
+                          type: repository
+                        advanced:
+                          log:
+                            level: info
+                          args: {}
+                        mode: orchestration
+                        config: default
+                  - step:
+                      type: OsvScanner
+                      name: OsvScanner_1
+                      identifier: OsvScanner_1
+                      spec:
+                        target:
+                          detection: auto
+                          type: repository
+                        advanced:
+                          log:
+                            level: info
+                          args: {}
+                        mode: orchestration
+                        config: default
     - stage:
         name: CI
         identifier: CI
