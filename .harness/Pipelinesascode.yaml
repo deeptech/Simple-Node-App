@@ -29,7 +29,7 @@ pipeline:
                     repo: devsecopscoereg.azurecr.io/nodeapp
                     tags:
                       - latest
-                    caching: false
+                    caching: true
                   when:
                     stageStatus: All
           infrastructure:
