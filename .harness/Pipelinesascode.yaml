@@ -45,7 +45,7 @@ pipeline:
         spec:
           deploymentType: Kubernetes
           service:
-            serviceRef: pipelineascode
+            serviceRef: harnessnodeapp
           environment:
             environmentRef: harnessdevenv
             deployToAll: false
