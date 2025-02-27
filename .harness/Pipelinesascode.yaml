@@ -28,17 +28,20 @@ pipeline:
                   identifier: Sonarqube_1
                   spec:
                     mode: orchestration
-                    config: default
+                    config: branch-scan
                     target:
                       type: repository
                       detection: auto
                     advanced:
                       log:
                         level: info
+                      fail_on_severity: critical
                     auth:
                       access_token: cf3466855d04f145f375be0df4ed70e7a4c4ddd2
                       domain: https://sonarcloud.io/
                       ssl: false
+                    tool:
+                      analysis_detection: auto
     - stage:
         name: CI
         identifier: CI
