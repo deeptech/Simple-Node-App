@@ -69,7 +69,10 @@ pipeline:
                     image:
                       type: docker_v2
                       tag: "1.5"
+                      access_id: devsecopscoereg
+                      access_token: <+input>
                       name: nodeapp
+                      domain: devsecopscoereg.azurecr.io
     - stage:
         name: harness_approval
         identifier: harness_approval
