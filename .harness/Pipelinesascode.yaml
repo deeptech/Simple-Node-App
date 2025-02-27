@@ -28,7 +28,7 @@ pipeline:
                     connectorRef: docker
                     repo: devsecopscoereg.azurecr.io/nodeapp
                     tags:
-                      - latest
+                      - "1.5"
                     caching: true
                   when:
                     stageStatus: All
