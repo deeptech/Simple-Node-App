@@ -28,7 +28,7 @@ pipeline:
                     connectorRef: docker
                     repo: devsecopscoereg.azurecr.io/nodeapp
                     tags:
-                      - "2.0"
+                      - "1.1"
           infrastructure:
             type: KubernetesDirect
             spec:
