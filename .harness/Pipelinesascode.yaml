@@ -41,6 +41,36 @@ pipeline:
               nodeSelector: {}
               os: Linux
     - stage:
+        name: container scan
+        identifier: container_scan
+        description: ""
+        type: SecurityTests
+        spec:
+          cloneCodebase: true
+          infrastructure:
+            useFromStage: CI
+          execution:
+            steps:
+              - step:
+                  type: AquaTrivy
+                  name: AquaTrivy_1
+                  identifier: AquaTrivy_1
+                  spec:
+                    mode: orchestration
+                    config: default
+                    target:
+                      type: container
+                      detection: auto
+                    advanced:
+                      log:
+                        level: info
+                      fail_on_severity: critical
+                    privileged: true
+                    image:
+                      type: docker_v2
+                      tag: latest
+                      name: nodeapp
+    - stage:
         name: harness_approval
         identifier: harness_approval
         description: ""
