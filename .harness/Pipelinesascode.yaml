@@ -29,6 +29,9 @@ pipeline:
                     repo: devsecopscoereg.azurecr.io/nodeapp
                     tags:
                       - latest
+                    caching: false
+                  when:
+                    stageStatus: All
           infrastructure:
             type: KubernetesDirect
             spec:
