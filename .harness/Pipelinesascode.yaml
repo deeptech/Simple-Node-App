@@ -11,66 +11,65 @@ pipeline:
         repoName: Simple-Node-App
         build: <+input>
   stages:
-    - parallel:
-        - stage:
-            name: CI
-            identifier: CI
-            description: ""
-            type: CI
+    - stage:
+        name: code_quality
+        identifier: code_quality
+        description: ""
+        type: SecurityTests
+        spec:
+          cloneCodebase: true
+          infrastructure:
+            useFromStage: CI
+          execution:
+            steps:
+              - step:
+                  type: Sonarqube
+                  name: Sonarqube_1
+                  identifier: Sonarqube_1
+                  spec:
+                    mode: orchestration
+                    config: branch-scan
+                    target:
+                      type: repository
+                      detection: auto
+                    advanced:
+                      log:
+                        level: info
+                    auth:
+                      access_token: cf3466855d04f145f375be0df4ed70e7a4c4ddd2
+                      domain: https://sonarcloud.io/
+                      ssl: false
+                    tool:
+                      analysis_detection: auto
+    - stage:
+        name: CI
+        identifier: CI
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          execution:
+            steps:
+              - step:
+                  type: BuildAndPushDockerRegistry
+                  name: Build and push to Docker
+                  identifier: Build_and_push_to_Docker
+                  spec:
+                    connectorRef: docker
+                    repo: devsecopscoereg.azurecr.io/nodeapp
+                    tags:
+                      - "1.5"
+                    caching: true
+                  when:
+                    stageStatus: All
+          infrastructure:
+            type: KubernetesDirect
             spec:
-              cloneCodebase: true
-              execution:
-                steps:
-                  - step:
-                      type: BuildAndPushDockerRegistry
-                      name: Build and push to Docker
-                      identifier: Build_and_push_to_Docker
-                      spec:
-                        connectorRef: docker
-                        repo: devsecopscoereg.azurecr.io/nodeapp
-                        tags:
-                          - "1.5"
-                        caching: true
-                      when:
-                        stageStatus: All
-              infrastructure:
-                type: KubernetesDirect
-                spec:
-                  connectorRef: harnessk8sconnector
-                  namespace: default
-                  automountServiceAccountToken: true
-                  nodeSelector: {}
-                  os: Linux
-        - stage:
-            name: code_quality
-            identifier: code_quality
-            description: ""
-            type: SecurityTests
-            spec:
-              cloneCodebase: true
-              infrastructure:
-                useFromStage: CI
-              execution:
-                steps:
-                  - step:
-                      type: Sonarqube
-                      name: Sonarqube_1
-                      identifier: Sonarqube_1
-                      spec:
-                        mode: orchestration
-                        config: branch-scan
-                        target:
-                          type: repository
-                          detection: auto
-                        advanced:
-                          log:
-                            level: info
-                        auth:
-                          access_token: cf3466855d04f145f375be0df4ed70e7a4c4ddd2
-                          domain: https://sonarcloud.io/
-                          ssl: false
-                        tool:
-                          analysis_detection: auto
+              connectorRef: harnessk8sconnector
+              namespace: default
+              automountServiceAccountToken: true
+              nodeSelector: {}
+              os: Linux
     - stage:
         name: container scan
         identifier: container_scan
