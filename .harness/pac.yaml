@@ -1,0 +1,14 @@
+inputSet:
+  name: pac
+  identifier: pac
+  orgIdentifier: default
+  projectIdentifier: default_project
+  pipeline:
+    identifier: PipelineasCode
+    properties:
+      ci:
+        codebase:
+          build:
+            type: branch
+            spec:
+              branch: <+trigger.branch>
