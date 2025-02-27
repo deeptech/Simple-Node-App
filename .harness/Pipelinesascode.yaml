@@ -68,7 +68,7 @@ pipeline:
                     privileged: true
                     image:
                       type: docker_v2
-                      tag: latest
+                      tag: "1.5"
                       name: nodeapp
     - stage:
         name: harness_approval
