@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: app-deployment
-          image: devsecopscoereg.azurecr.io/nodeapp
+          image: devsecopscoereg.azurecr.io/nodeapp:1.5
           imagePullPolicy: IfNotPresent
           resources:
             requests:
