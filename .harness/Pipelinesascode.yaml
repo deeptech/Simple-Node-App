@@ -136,6 +136,7 @@ pipeline:
                       disallowPipelineExecutor: false
                       userGroups:
                         - approver
+                        - _project_all_users
                     isAutoRejectEnabled: false
                     approverInputs: []
         tags: {}
