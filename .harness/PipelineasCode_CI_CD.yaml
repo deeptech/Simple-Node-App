@@ -1,0 +1,180 @@
+pipeline:
+  projectIdentifier: default_project
+  orgIdentifier: default
+  tags: {}
+  properties:
+    ci:
+      codebase:
+        connectorRef: account.github
+        repoName: Simple-Node-App
+        build: <+input>
+  stages:
+    - stage:
+        name: code_quality
+        identifier: code_quality
+        description: ""
+        type: SecurityTests
+        spec:
+          cloneCodebase: true
+          infrastructure:
+            useFromStage: CI
+          execution:
+            steps:
+              - parallel:
+                  - step:
+                      type: Owasp
+                      name: Owasp_1
+                      identifier: Owasp_1
+                      spec:
+                        target:
+                          detection: auto
+                          type: repository
+                        advanced:
+                          log:
+                            level: info
+                          args: {}
+                        mode: orchestration
+                        config: default
+                  - step:
+                      type: OsvScanner
+                      name: OsvScanner_1
+                      identifier: OsvScanner_1
+                      spec:
+                        target:
+                          detection: auto
+                          type: repository
+                        advanced:
+                          log:
+                            level: info
+                          args: {}
+                        mode: orchestration
+                        config: default
+    - stage:
+        name: CI
+        identifier: CI
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          execution:
+            steps:
+              - step:
+                  type: BuildAndPushDockerRegistry
+                  name: Build and push to Docker
+                  identifier: Build_and_push_to_Docker
+                  spec:
+                    connectorRef: docker
+                    repo: devsecopscoereg.azurecr.io/nodeapp
+                    tags:
+                      - "1.5"
+                    caching: true
+                  when:
+                    stageStatus: All
+          infrastructure:
+            type: KubernetesDirect
+            spec:
+              connectorRef: harnessk8sconnector
+              namespace: default
+              automountServiceAccountToken: true
+              nodeSelector: {}
+              os: Linux
+    - stage:
+        name: container scan
+        identifier: container_scan
+        description: ""
+        type: SecurityTests
+        spec:
+          cloneCodebase: true
+          infrastructure:
+            useFromStage: CI
+          execution:
+            steps:
+              - step:
+                  type: AquaTrivy
+                  name: AquaTrivy_1
+                  identifier: AquaTrivy_1
+                  spec:
+                    mode: orchestration
+                    config: default
+                    target:
+                      type: container
+                      detection: auto
+                    advanced:
+                      log:
+                        level: info
+                      fail_on_severity: critical
+                    privileged: true
+                    image:
+                      type: docker_v2
+                      tag: "1.5"
+                      access_id: devsecopscoereg
+                      access_token: <+input>
+                      name: nodeapp
+                      domain: devsecopscoereg.azurecr.io
+    - stage:
+        name: harness_approval
+        identifier: harness_approval
+        description: ""
+        type: Approval
+        spec:
+          execution:
+            steps:
+              - step:
+                  name: approve
+                  identifier: approve
+                  type: HarnessApproval
+                  timeout: 1d
+                  spec:
+                    approvalMessage: |-
+                      Please review the following information
+                      and approve the pipeline progression
+                    includePipelineExecutionHistory: true
+                    approvers:
+                      minimumCount: 1
+                      disallowPipelineExecutor: false
+                      userGroups:
+                        - approver
+                    isAutoRejectEnabled: false
+                    approverInputs: []
+        tags: {}
+    - stage:
+        name: CD
+        identifier: CD
+        description: ""
+        type: Deployment
+        spec:
+          deploymentType: Kubernetes
+          service:
+            serviceRef: harnessnodeapp
+          environment:
+            environmentRef: harnessdevenv
+            deployToAll: false
+            infrastructureDefinitions:
+              - identifier: harnessk8sinfra
+          execution:
+            steps:
+              - step:
+                  name: Rollout Deployment
+                  identifier: rolloutDeployment
+                  type: K8sRollingDeploy
+                  timeout: 10m
+                  spec:
+                    skipDryRun: false
+                    pruningEnabled: false
+            rollbackSteps:
+              - step:
+                  name: Rollback Rollout Deployment
+                  identifier: rollbackRolloutDeployment
+                  type: K8sRollingRollback
+                  timeout: 9m
+                  spec:
+                    pruningEnabled: false
+        tags: {}
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: StageRollback
+  identifier: PipelineasCode_CI_CD
+  name: PipelineasCode - CI CD
