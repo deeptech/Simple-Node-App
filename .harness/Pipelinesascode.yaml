@@ -12,31 +12,6 @@ pipeline:
         build: <+input>
   stages:
     - stage:
-        name: code_quality
-        identifier: code_quality
-        description: ""
-        type: SecurityTests
-        spec:
-          cloneCodebase: true
-          infrastructure:
-            useFromStage: CI
-          execution:
-            steps:
-              - step:
-                  type: Owasp
-                  name: Owasp
-                  identifier: Owasp_1
-                  spec:
-                    mode: orchestration
-                    config: default
-                    target:
-                      type: repository
-                      detection: auto
-                    advanced:
-                      log:
-                        level: info
-                    imagePullPolicy: IfNotPresent
-    - stage:
         name: CI
         identifier: CI
         description: ""
