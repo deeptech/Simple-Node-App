@@ -28,7 +28,7 @@ pipeline:
                     connectorRef: dockerhub
                     repo: deeptech786/nodeapp
                     tags:
-                      - "1.5"
+                      - latest
                     caching: true
                   when:
                     stageStatus: All
